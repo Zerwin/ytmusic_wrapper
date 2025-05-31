@@ -1,0 +1,17 @@
+{
+  "domain": "ytmusic_wrapper",
+  "name": "Youtube Music Wrapper",
+  "codeowners": [
+    "@Zerwin"
+  ],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://www.home-assistant.io/integrations/ytmusic_wrapper",
+  "integration_type": "device",
+  "iot_class": "local_polling",
+  "quality_scale": "bronze",
+  "requirements": [
+    "ytmusic_wrapper==0.0.3"
+  ],
+  "version": "0.0.1"
+}
