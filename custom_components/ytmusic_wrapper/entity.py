@@ -32,6 +32,7 @@ class YoutubeMusicWrapperBaseEntity(Entity):
 
     _attr_has_entity_name = True
     _attr_name = None
+    _unavailable_logged = False
 
     def __init__(self, api: ytmusic_wrapper, config_entry: ConfigEntry) -> None:
         """Initialize the entity."""
@@ -60,7 +61,6 @@ class YoutubeMusicWrapperBaseEntity(Entity):
     async def _update_media_player_state(self) -> None:
         """Update the current app information."""
         logger.debug("Updating media player state for %s", self._name)
-        # Get status
         is_available = await self._api.api_calls.get_status()
         if is_available:
             await self._succesful_update()
@@ -76,16 +76,17 @@ class YoutubeMusicWrapperBaseEntity(Entity):
         self._attr_media_title = None
         self._attr_media_artist = None
         self._attr_media_image_url = None
-        self.available = False
+        self._attr_available = False
         self.async_write_ha_state()
-        logger.debug("Failed to update media player state for %s", self._name)
+        if not self._unavailable_logged:
+            logger.info("Media player %s is unavailable", self._name)
 
     async def _succesful_update(self) -> None:
         """Handle successful update."""
         current_song = await self._api.api_calls.get_song()
         current_queue = await self._api.api_calls.get_queue()
         current_volume = await self._api.api_calls.get_volume()
-        self.available = True
+        self._attr_available = True
         self._attr_volume_level = current_volume / 100
         self._attr_media_content_type = MediaType.MUSIC
         if not current_queue["items"]:
@@ -107,3 +108,5 @@ class YoutubeMusicWrapperBaseEntity(Entity):
             self._attr_media_image_url = current_song["imageSrc"]
         self.async_write_ha_state()
         logger.debug("Successfully updated media player state for %s", self._name)
+        if self._unavailable_logged:
+            logger.debug("Media Player %s is back online", self._name)
