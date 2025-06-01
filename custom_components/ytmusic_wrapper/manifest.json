@@ -11,7 +11,7 @@
   "iot_class": "local_polling",
   "quality_scale": "bronze",
   "requirements": [
-    "ytmusic_wrapper==0.0.3"
+    "ytmusic_wrapper==0.0.4"
   ],
   "version": "0.0.1"
 }
