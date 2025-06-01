@@ -18,7 +18,7 @@ from . import YoutubeMusicWrapperConfigEntry
 from .entity import YoutubeMusicWrapperBaseEntity
 
 logger = logging.getLogger(__name__)
-SCAN_INTERVAL = timedelta(seconds=3)  # seconds
+SCAN_INTERVAL = timedelta(seconds=3)
 
 
 async def async_setup_entry(
@@ -59,6 +59,8 @@ class YoutubeMusicWrapperPlayerEntity(YoutubeMusicWrapperBaseEntity, MediaPlayer
     async def async_update(self) -> None:
         """Update the current app information."""
         await self._update_media_player_state()
+        if(not self.available):
+            SCAN_INTERVAL = timedelta(seconds=30)
 
     async def _update_volume_info(self) -> None:
         """Update volume info."""
