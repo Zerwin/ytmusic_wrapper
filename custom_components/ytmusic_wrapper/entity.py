@@ -109,4 +109,4 @@ class YoutubeMusicWrapperBaseEntity(Entity):
         self.async_write_ha_state()
         logger.debug("Successfully updated media player state for %s", self._name)
         if self._unavailable_logged:
-            logger.debug("Media Player %s is back online", self._name)
+            logger.info("Media Player %s is back online", self._name)
